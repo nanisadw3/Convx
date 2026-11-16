@@ -163,29 +163,32 @@ fun CollectionDetailHeader(
                         modifier = Modifier.padding(horizontal = 24.dp))
                 }
                 Row(Modifier.padding(top = 17.dp), verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                    ContrastCircleButton(foreground, onShuffle, size = 54.dp, enabled = enabled) {
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    ContrastCircleButton(foreground, onShuffle, size = 50.dp, enabled = enabled) {
                         SymbolIcon(sf("shuffle"), stringResource(R.string.shuffle), size = 26.dp)
                     }
+                    // Grows with its label ("Reproducir" is longer than "Play") instead of a fixed
+                    // width, and keeps its own padding so the text never touches the edges.
                     Row(
-                        Modifier.width(140.dp).height(50.dp).clip(RoundedCornerShape(25.dp))
+                        Modifier.defaultMinSize(minWidth = 140.dp).height(50.dp).clip(RoundedCornerShape(25.dp))
                             .background(foreground.copy(alpha = if (enabled) .82f else .4f))
-                            .clickable(enabled = enabled, role = Role.Button, onClick = onPlay),
+                            .clickable(enabled = enabled, role = Role.Button, onClick = onPlay)
+                            .padding(horizontal = 22.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         val inverse = if (foreground == Color.White) Color.Black else Color.White
-                        SymbolIcon(sf(if (playing) "pause.fill" else "play.fill"), null, tint = inverse, size = 19.dp)
-                        Spacer(Modifier.width(7.dp))
+                        SymbolIcon(sf(if (playing) "pause.fill" else "play.fill"), null, tint = inverse, size = 17.dp)
+                        Spacer(Modifier.width(8.dp))
                         Text(stringResource(if (playing) R.string.pause else R.string.play),
-                            style = SfStyle(19.sp, 23.sp, FontWeight.Bold), color = inverse)
+                            style = SfStyle(17.sp, 22.sp, FontWeight.Bold), color = inverse, maxLines = 1)
                     }
                     if (onDownload != null) {
                         // Filled once everything is saved, so "done" reads differently from "not yet".
                         val downloaded = downloadState == Download.STATE_COMPLETED
                         val inProgress = downloadState == Download.STATE_QUEUED ||
                             downloadState == Download.STATE_DOWNLOADING
-                        ContrastCircleButton(foreground, onDownload, size = 54.dp, filled = downloaded, enabled = enabled) {
+                        ContrastCircleButton(foreground, onDownload, size = 50.dp, filled = downloaded, enabled = enabled) {
                             if (inProgress) {
                                 CircularProgressIndicator(Modifier.size(24.dp), strokeWidth = 2.dp)
                             } else {
@@ -198,7 +201,7 @@ fun CollectionDetailHeader(
                         }
                     }
                     if (onRightAction != null) {
-                        ContrastCircleButton(foreground, onRightAction, size = 54.dp) {
+                        ContrastCircleButton(foreground, onRightAction, size = 50.dp) {
                             SymbolIcon(sf(rightSymbol), stringResource(R.string.more_options), size = 26.dp)
                         }
                     }
