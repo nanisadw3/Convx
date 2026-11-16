@@ -147,8 +147,10 @@ fun SymbolIcon(
     SfSymbolIcon(
         symbol = symbol,
         modifier = base,
-        size = if (size.isSpecified) size else LocalSymbolIconSize.current,
-        weight = weight,
+        // The back chevron is tall and heavy; at the default 24dp it fills a round button, so it
+        // sits smaller and one weight lighter unless a call site picks its own.
+        size = if (size.isSpecified) size else if (symbol.name == "chevron.left") LocalSymbolIconSize.current * 0.72f else LocalSymbolIconSize.current,
+        weight = if (symbol.name == "chevron.left" && weight == SfWeight.Bold) SfWeight.Semibold else weight,
         mode = mode,
         tint = if (vibrant) VibrantIconInk else if (tint.isSpecified) tint else IosTheme.contentColor,
         variableValue = if (variableValue != null) shownValue else null,
