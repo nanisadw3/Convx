@@ -5,6 +5,7 @@
 
 package com.convx.music.ui.screens.library.apple
 
+import com.convx.music.ui.component.bounceOnEnter
 import com.convx.music.ui.component.sf
 import android.content.Intent
 import androidx.compose.foundation.Canvas
@@ -279,7 +280,8 @@ private fun CategoryRow(label: String, icon: SfSymbol, onClick: () -> Unit) {
                 style = SfStyle(17.sp, 22.sp, tracking = (-0.43).sp),
                 color = colors.label,
                 maxLines = 1,
-                modifier = Modifier.align(Alignment.CenterStart),
+                // Moves with the row's glyph, which bounces on entry too.
+                modifier = Modifier.align(Alignment.CenterStart).bounceOnEnter("library_row:" + label),
             )
             Chevron(Modifier.align(Alignment.CenterEnd))
             Box(

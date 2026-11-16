@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
@@ -59,6 +60,23 @@ private val DefaultBounce = SfSymbolEffect.Bounce(scope = SfEffectScope.ByLayer)
 
 /** Entry bounces already played this process, so scrolling or recomposition never replays them. */
 private val playedEntries = java.util.Collections.synchronizedSet(HashSet<Any>())
+
+/**
+ * The text counterpart of a glyph's entry bounce: it hops up and settles with a spring, once per
+ * process for each [key], so a label can move together with the icon beside it. Same policy as
+ * [SymbolIcon]'s `bounceOnEnter`: scrolling or recomposition never replays it.
+ */
+@Composable
+fun Modifier.bounceOnEnter(key: Any): Modifier {
+    val lift = remember { androidx.compose.animation.core.Animatable(0f) }
+    LaunchedEffect(Unit) {
+        if (playedEntries.add(key)) {
+            lift.animateTo(-1f, androidx.compose.animation.core.tween(150, easing = androidx.compose.animation.core.FastOutSlowInEasing))
+            lift.animateTo(0f, androidx.compose.animation.core.spring(dampingRatio = 0.5f, stiffness = 420f))
+        }
+    }
+    return this.graphicsLayer { translationY = lift.value * 4.dp.toPx() }
+}
 
 /**
  * App-wide SF Symbol: bold weight, hierarchical layers, optional chrome.
