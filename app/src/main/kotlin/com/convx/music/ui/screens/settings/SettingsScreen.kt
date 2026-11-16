@@ -56,6 +56,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -189,7 +190,7 @@ fun SettingsScreen(
                             .padding(horizontal = 24.dp, vertical = 24.dp),
                     ) {
                         Text(
-                            hub.title,
+                            settingsLabel(hub.title),
                             style = IosTheme.typography.largeTitle,
                             color = IosTheme.colors.label,
                             modifier = Modifier.padding(start = 4.dp, top = 40.dp, bottom = 20.dp),
@@ -241,15 +242,22 @@ private fun rememberSearchEntries(): List<SearchEntry> {
 private fun SearchResults(entries: List<SearchEntry>, query: String, onAction: (SettingsAction) -> Unit) {
     val q = query.trim().lowercase()
     val terms = q.split(Regex("\\s+")).filter(String::isNotBlank)
+    val context = androidx.compose.ui.platform.LocalContext.current
+    // "Settings" is the one category that is a real resource rather than a tree label.
+    fun label(english: String) =
+        if (english == "Settings") context.getString(R.string.settings) else settingsLabel(context, english)
     val hits = entries.filter { e ->
-        val searchableText = listOfNotNull(e.link.title, e.link.subtitle, e.link.keywords, e.category)
-            .joinToString(" ")
-            .lowercase()
+        // Search the English text and what the user actually sees.
+        val searchableText = listOfNotNull(
+            e.link.title, label(e.link.title),
+            e.link.subtitle, e.link.subtitle?.let(::label),
+            e.link.keywords, e.category, label(e.category),
+        ).joinToString(" ").lowercase()
         terms.isNotEmpty() && terms.all { term -> searchableText.contains(term) }
     }
     if (hits.isEmpty()) {
         Text(
-            "No settings found for “${query.trim()}”",
+            stringResource(R.string.settings_search_none, query.trim()),
             style = IosTheme.typography.body,
             color = IosTheme.colors.secondaryLabel,
             textAlign = TextAlign.Center,
@@ -259,8 +267,8 @@ private fun SearchResults(entries: List<SearchEntry>, query: String, onAction: (
     }
     // Results keep their category so "Background" under Player reads differently from a home background.
     SettingsLinkCard(
-        title = "${hits.size} result${if (hits.size == 1) "" else "s"}",
-        links = hits.map { it.link.copy(subtitle = it.category + (it.link.subtitle?.let { s -> " · $s" } ?: "")) },
+        title = pluralStringResource(R.plurals.settings_search_results, hits.size, hits.size),
+        links = hits.map { it.link.copy(subtitle = label(it.category) + (it.link.subtitle?.let { s -> " · " + label(s) } ?: "")) },
         onAction = onAction,
     )
 }
@@ -317,14 +325,14 @@ private fun ProfileCard(accountName: String, accountImageUrl: String?, onClick: 
         )
         Column(Modifier.weight(1f).padding(start = 16.dp)) {
             Text(
-                if (signedIn) accountName else "Sign in",
+                if (signedIn) accountName else settingsLabel("Sign in"),
                 style = IosTheme.typography.title3,
                 fontWeight = FontWeight.SemiBold,
                 color = IosTheme.colors.label,
                 maxLines = 1,
             )
             Text(
-                if (signedIn) "YouTube Music, sync and more" else "YouTube Music, Spotify and more",
+                settingsLabel(if (signedIn) "YouTube Music, sync and more" else "YouTube Music, Spotify and more"),
                 style = IosTheme.typography.footnote,
                 color = IosTheme.colors.secondaryLabel,
                 maxLines = 1,

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_updates_paused">Las alertas de actualización automática están en pausa para esta compilación.</string>
+</resources>

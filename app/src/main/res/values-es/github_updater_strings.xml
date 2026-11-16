@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="updater_remind_later">Recordarme mañana</string>
+    <string name="updater_view_release">Ver versión en GitHub</string>
+    <string name="updater_release_details">%1$s · %2$s MB</string>
+    <string name="updater_waiting">Esperando conexión o reintento…</string>
+    <string name="updater_verifying">Verificando actualización…</string>
+    <string name="updater_installing">Preparando instalación…</string>
+    <string name="updater_approval">Confirma la instalación para terminar de actualizar.</string>
+    <string name="updater_installed">Actualización instalada</string>
+    <string name="updater_install_notice">Android te pedirá confirmar la instalación. Instalar puede interrumpir la reproducción.</string>
+    <string name="updater_rate_limit">GitHub está limitando las solicitudes. Inténtalo de nuevo más tarde.</string>
+    <string name="updater_storage">No hay suficiente espacio libre. Libera almacenamiento e inténtalo de nuevo.</string>
+    <string name="updater_verification_failed">No se pudo verificar la actualización. Descárgala de nuevo antes de instalar.</string>
+    <string name="updater_incompatible">Esta actualización no es compatible con esta instalación o dispositivo.</string>
+    <string name="updater_blocked">Android bloqueó la instalación. Revisa los ajustes de instalación de tu dispositivo.</string>
+    <string name="updater_cancelled">Se canceló la instalación. Tu actualización descargada sigue disponible.</string>
+    <string name="updater_install_failed">La instalación no se completó. Puedes intentarlo de nuevo.</string>
+    <string name="updater_unavailable">Esta actualización ya no está disponible. Busca actualizaciones de nuevo.</string>
+    <string name="updater_metadata_failed">No se pudo verificar la información de la versión. Inténtalo de nuevo más tarde.</string>
+    <string name="updater_channel_disabled">Usa tu fuente de instalación para actualizar esta compilación.</string>
+</resources>

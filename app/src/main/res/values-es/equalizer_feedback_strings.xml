@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="eq_edit_band">Editar banda del ecualizador</string>
+    <string name="eq_frequency_hint">Frecuencia central (20–20000 Hz)</string>
+    <string name="eq_q_hint">Q / ancho de banda (0.1–20)</string>
+    <string name="eq_band_frequency">%1$.0f Hz</string>
+    <string name="eq_band_q">Q %1$.2f</string>
+    <string name="eq_preamp_value">Preamplificador: %1$.1f dB</string>
+</resources>

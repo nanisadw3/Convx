@@ -306,7 +306,7 @@ fun SettingsSheetHost(navController: NavController) {
 @Composable
 fun SettingsHubScreen(navController: NavController, hub: SettingsHub) {
     val onAction = rememberSettingsActionHandler(navController)
-    SettingsPage(navController = navController, title = hub.title, horizontalPadding = 16.dp) {
+    SettingsPage(navController = navController, title = settingsLabel(hub.title), horizontalPadding = 16.dp) {
         SettingsHubBody(hub, onAction)
     }
 }
@@ -329,7 +329,7 @@ fun SettingsLinkCard(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (title != null) Text(
-            title,
+            settingsLabel(title),
             style = IosTheme.typography.footnote,
             fontWeight = FontWeight.SemiBold,
             color = IosTheme.colors.secondaryLabel,
@@ -375,9 +375,9 @@ fun SettingsLinkRow(link: SettingsLink, trailing: String?, selected: Boolean, on
         }
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(link.title, style = IosTheme.typography.body, color = IosTheme.colors.label)
+            Text(settingsLabel(link.title), style = IosTheme.typography.body, color = IosTheme.colors.label)
             if (link.subtitle != null) Text(
-                link.subtitle,
+                settingsLabel(link.subtitle),
                 style = IosTheme.typography.footnote,
                 color = IosTheme.colors.secondaryLabel,
                 maxLines = 2,

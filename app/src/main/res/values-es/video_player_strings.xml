@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="video_unavailable">No se pudo cargar el video</string>
+    <string name="video_retry">Reintentar video</string>
+    <string name="video_watch">Ver video</string>
+    <string name="video_close">Volver a la portada</string>
+    <string name="video_fullscreen">Video en pantalla completa</string>
+    <string name="video_exit_fullscreen">Salir de pantalla completa</string>
+    <string name="video_play">Reproducir</string>
+    <string name="video_pause">Pausar</string>
+    <string name="video_mode_song">Canción</string>
+    <string name="video_mode_video">Video</string>
+    <string name="video_seek_back">Retroceder 10 segundos</string>
+    <string name="video_seek_forward">Avanzar 10 segundos</string>
+    <string name="video_seek">Posición de reproducción</string>
+    <string name="video_volume">Volumen</string>
+    <string name="video_more">Opciones de video</string>
+    <string name="video_fit">Ajustar video</string>
+    <string name="video_fill">Llenar pantalla</string>
+    <string name="video_picture_in_picture">Imagen en imagen</string>
+</resources>
