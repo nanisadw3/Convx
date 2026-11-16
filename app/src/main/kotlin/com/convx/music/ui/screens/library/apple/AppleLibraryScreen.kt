@@ -165,6 +165,8 @@ fun AppleLibraryScreen(
     val needsAccess = localOnly && !permission.granted
     LaunchedEffect(permission.granted) { if (permission.granted) viewModel.scanDevice() }
     val colors = IosTheme.colors
+    // Row labels that already bounced during this visit; a new visit starts empty and bounces them again.
+    val bounced = remember { mutableSetOf<Any>() }
 
     val open: (LocalItem) -> Unit = { item ->
         when (item) {
@@ -194,7 +196,7 @@ fun AppleLibraryScreen(
         }
 
         items(Rows.filter { !localOnly || it.destination in DeviceLibraryDestinations }, key = { it.destination }, contentType = { "row" }) { row ->
-            CategoryRow(stringResource(row.label), row.icon) { onOpen(row.destination) }
+            CategoryRow(stringResource(row.label), row.icon, bounced) { onOpen(row.destination) }
         }
 
         if (needsAccess) {
@@ -257,7 +259,7 @@ internal fun SfStyle(size: androidx.compose.ui.unit.TextUnit, line: androidx.com
 
 /** Library category row with an icon, label, and divider. */
 @Composable
-private fun CategoryRow(label: String, icon: SfSymbol, onClick: () -> Unit) {
+private fun CategoryRow(label: String, icon: SfSymbol, bounced: MutableSet<Any>, onClick: () -> Unit) {
     val colors = IosTheme.colors
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -281,7 +283,7 @@ private fun CategoryRow(label: String, icon: SfSymbol, onClick: () -> Unit) {
                 color = colors.label,
                 maxLines = 1,
                 // Moves with the row's glyph, which bounces on entry too.
-                modifier = Modifier.align(Alignment.CenterStart).bounceOnEnter("library_row:" + label),
+                modifier = Modifier.align(Alignment.CenterStart).bounceOnEnter(bounced, label),
             )
             Chevron(Modifier.align(Alignment.CenterEnd))
             Box(

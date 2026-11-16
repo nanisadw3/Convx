@@ -62,21 +62,26 @@ private val DefaultBounce = SfSymbolEffect.Bounce(scope = SfEffectScope.ByLayer)
 private val playedEntries = java.util.Collections.synchronizedSet(HashSet<Any>())
 
 /**
- * The text counterpart of a glyph's entry bounce: it hops up and settles with a spring, once per
- * process for each [key], so a label can move together with the icon beside it. Same policy as
- * [SymbolIcon]'s `bounceOnEnter`: scrolling or recomposition never replays it.
+ * The text counterpart of a glyph's entry bounce: it hops up and settles with a spring, once for
+ * each [key] in [played]. A screen that wants the bounce on every visit keeps its own [played]
+ * set (remembered while the screen is open), so a revisit replays it but scrolling rows in and
+ * out of a lazy list does not.
  */
 @Composable
-fun Modifier.bounceOnEnter(key: Any): Modifier {
+fun Modifier.bounceOnEnter(played: MutableSet<Any>, key: Any): Modifier {
     val lift = remember { androidx.compose.animation.core.Animatable(0f) }
     LaunchedEffect(Unit) {
-        if (playedEntries.add(key)) {
+        if (played.add(key)) {
             lift.animateTo(-1f, androidx.compose.animation.core.tween(150, easing = androidx.compose.animation.core.FastOutSlowInEasing))
             lift.animateTo(0f, androidx.compose.animation.core.spring(dampingRatio = 0.5f, stiffness = 420f))
         }
     }
     return this.graphicsLayer { translationY = lift.value * 4.dp.toPx() }
 }
+
+/** Once per process for each [key], like [SymbolIcon]'s `bounceOnEnter` with an `enterKey`. */
+@Composable
+fun Modifier.bounceOnEnter(key: Any): Modifier = bounceOnEnter(playedEntries, key)
 
 /**
  * App-wide SF Symbol: bold weight, hierarchical layers, optional chrome.
