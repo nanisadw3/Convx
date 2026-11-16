@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -172,9 +174,17 @@ object Icon {
     @Composable
     fun Download(state: Int?) {
         when (state) {
-            STATE_COMPLETED -> SymbolIcon(symbol = sf("arrow.down.circle"), contentDescription = null, size = 18.dp, modifier = Modifier
-                    
-                    .padding(end = 2.dp))
+            // Green disc with a tick, so "saved on this phone" reads at a glance in a long list.
+            STATE_COMPLETED -> androidx.compose.foundation.layout.Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(end = 2.dp)
+                    .size(18.dp)
+                    .clip(androidx.compose.foundation.shape.CircleShape)
+                    .background(com.convx.music.ui.ios.foundation.IosTheme.colors.systemGreen),
+            ) {
+                SymbolIcon(symbol = sf("checkmark"), contentDescription = stringResource(R.string.filter_downloaded), size = 11.dp, tint = Color.White)
+            }
             STATE_QUEUED, STATE_DOWNLOADING -> CircularProgressIndicator(
                 strokeWidth = 2.dp,
                 modifier = Modifier
